@@ -91,6 +91,31 @@
     },
     "lifestyle_gallery": {
       "type": "pdp-lifestyle-gallery",
+      "blocks": {
+        "lifestyle_1": {
+          "type": "image",
+          "settings": {
+            "caption": "Styled in a modern minimalist bedroom"
+          }
+        },
+        "lifestyle_2": {
+          "type": "image",
+          "settings": {
+            "caption": "Customer-inspired warm boho sanctuary"
+          }
+        },
+        "lifestyle_3": {
+          "type": "image",
+          "settings": {
+            "caption": "Layered textures with matching pillowcases"
+          }
+        }
+      },
+      "block_order": [
+        "lifestyle_1",
+        "lifestyle_2",
+        "lifestyle_3"
+      ],
       "settings": {
         "eyebrow": "Lifestyle inspiration",
         "heading": "See how our bedding styles real homes",
