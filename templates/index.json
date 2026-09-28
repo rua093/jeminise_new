@@ -43,6 +43,8 @@
         "hero_buttons"
       ],
       "settings": {
+        "image": "shopify://shop_images/hero_banner.webp",
+        "image_2": "shopify://shop_images/hero_banner_mobile.webp",
         "image_overlay_opacity": 30,
         "image_height": "large",
         "desktop_content_position": "bottom-left",
@@ -58,6 +60,8 @@
     "bestselling_bedding": {
       "type": "bestselling-bedding",
       "settings": {
+        "collection": "best-selling",
+        "promo_image": "shopify://shop_images/best_seller.webp",
         "eyebrow": "OUR MOST LOVED",
         "title": "Best Sellers",
         "description": "Loved for softness, warmth and everyday comfort.",
@@ -70,6 +74,7 @@
     "brand_intro": {
       "type": "brand-intro",
       "settings": {
+        "background_image": "shopify://shop_images/media.webp",
         "eyebrow": "MADE TO BE YOURS",
         "heading": "What will you find here?",
         "body": "Discover unique bedding you won’t find everywhere. Customize the details, add your personal touch, or upload your own idea—we’ll help turn it into something made just for you.",
@@ -86,6 +91,12 @@
     "collection_bento": {
       "type": "collection-bento",
       "settings": {
+        "collection_list": [
+          "nature",
+          "animals",
+          "hobbies",
+          "sports"
+        ],
         "eyebrow": "Curated comforts",
         "heading": "Shop by Collection",
         "subheading": "Browse blankets, quilts and comforters by the kind of comfort you want to bring into the room, from airy and minimal to warm and cocooning.",
@@ -93,8 +104,8 @@
         "stat_1_lbl": "Collections",
         "stat_2_val": "1200+",
         "stat_2_lbl": "Designs",
-        "stat_3_val": "Loved",
-        "stat_3_lbl": "By Thousands",
+        "stat_3_val": "Loved by",
+        "stat_3_lbl": "Thousands",
         "view_all_label": "Explore all collections",
         "view_all_link": "/collections",
         "color_scheme": "scheme-1"
@@ -103,6 +114,8 @@
     "new_arrivals": {
       "type": "new-arrivals-carousel",
       "settings": {
+        "collection": "new-arrivals",
+        "background_image": "shopify://shop_images/bg_new_arrivals.webp",
         "eyebrow": "JUST LANDED",
         "heading": "New Arrivals",
         "subheading": "Discover our latest custom blankets, quilts and comforters.",
@@ -120,8 +133,47 @@
         "item_3_title": "Lasting Quality",
         "item_3_desc": "Carefully created to feel beautiful, durable, and gift-worthy.",
         "item_4_title": "International Shipping",
-        "item_4_desc": "Free shipping to U.S. & Canada. $5.99 USD worldwide.",
+        "item_4_desc": "Free shipping to the U.S. & Canada. $5.99 USD to supported international destinations.",
         "color_scheme": "scheme-5"
+      }
+    },
+    "customer_reviews": {
+      "type": "customer-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "author_name": "Jessica R.",
+            "review_text": "I ordered a personalized comforter for my daughter's dorm room. She absolutely loves how warm and cozy it is!",
+            "product_title": "Custom Photo Comforter Set"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "author_name": "Michael B.",
+            "review_text": "High quality stitching and vibrant colors that didn't fade after the first wash. Truly impressive craftsmanship.",
+            "product_title": "Handcrafted Quilt Bedding"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "author_name": "Amanda T.",
+            "review_text": "Fast delivery and customer service was super responsive when I had a question about custom sizing.",
+            "product_title": "Custom Printed Duvet Cover"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "heading": "Customers are saying",
+        "background_image": "shopify://shop_images/bg_review.webp",
+        "color_scheme": "scheme-1"
       }
     }
   },
@@ -131,6 +183,7 @@
     "brand_intro",
     "collection_bento",
     "new_arrivals",
-    "trust_signals"
+    "trust_signals",
+    "customer_reviews"
   ]
 }
