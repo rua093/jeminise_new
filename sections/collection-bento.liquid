@@ -1,0 +1,187 @@
+{{ 'section-collection-bento.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collections_list = section.settings.collection_list
+  assign eyebrow = section.settings.eyebrow | default: 'Curated comforts'
+  assign heading = section.settings.heading | default: 'Shop by Collection'
+  assign subheading = section.settings.subheading | default: 'Browse blankets, quilts and comforters by the kind of comfort you want to bring into the room, from airy and minimal to warm and cocooning.'
+  assign view_all_label = section.settings.view_all_label | default: 'Explore all collections'
+  assign view_all_link = section.settings.view_all_link | default: '/collections'
+-%}
+
+<div class="collection-bento color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="collection-bento__inner">
+      <div class="collection-bento__editorial">
+        <div>
+          <p class="collection-bento__eyebrow">{{ eyebrow | escape }}</p>
+          <h2 class="collection-bento__heading">{{ heading | escape }}</h2>
+          <p class="collection-bento__desc">{{ subheading | escape }}</p>
+        </div>
+
+        <div class="collection-bento__stats">
+          <div class="collection-bento__stat-item">
+            <div class="collection-bento__stat-val">{{ section.settings.stat_1_val | default: '38+' }}</div>
+            <div class="collection-bento__stat-lbl">{{ section.settings.stat_1_lbl | default: 'Collections' }}</div>
+          </div>
+          <div class="collection-bento__stat-item">
+            <div class="collection-bento__stat-val">{{ section.settings.stat_2_val | default: '1200+' }}</div>
+            <div class="collection-bento__stat-lbl">{{ section.settings.stat_2_lbl | default: 'Designs' }}</div>
+          </div>
+          <div class="collection-bento__stat-item">
+            <div class="collection-bento__stat-val">{{ section.settings.stat_3_val | default: 'Loved' }}</div>
+            <div class="collection-bento__stat-lbl">{{ section.settings.stat_3_lbl | default: 'By Thousands' }}</div>
+          </div>
+        </div>
+
+        {%- if view_all_link != blank -%}
+          <a href="{{ view_all_link }}" class="collection-bento__cta">
+            <span>{{ view_all_label | escape }}</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="collection-bento__grid">
+        {%- if collections_list != blank and collections_list.count > 0 -%}
+          {%- for collection in collections_list limit: 4 -%}
+            {%- liquid
+              assign collection_image = collection.featured_image | default: collection.products.first.featured_image
+            -%}
+            <a href="{{ collection.url }}" class="collection-bento__card">
+              {%- if collection_image != blank -%}
+                {{
+                  collection_image
+                  | image_url: width: 800
+                  | image_tag:
+                    class: 'collection-bento__card-img',
+                    widths: '300, 500, 800',
+                    sizes: '(min-width: 990px) 25vw, (min-width: 550px) 50vw, 100vw',
+                    loading: 'lazy',
+                    alt: collection.title
+                }}
+              {%- else -%}
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg collection-bento__card-img' }}
+              {%- endif -%}
+
+              <div class="collection-bento__card-overlay"></div>
+              <div class="collection-bento__card-content">
+                <h3 class="collection-bento__card-title">{{ collection.title | escape }}</h3>
+                <div class="collection-bento__card-arrow" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..4) -%}
+            <div class="collection-bento__card">
+              {{ 'collection-' | append: i | placeholder_svg_tag: 'placeholder-svg collection-bento__card-img' }}
+              <div class="collection-bento__card-overlay"></div>
+              <div class="collection-bento__card-content">
+                <h3 class="collection-bento__card-title">Collection Title</h3>
+              </div>
+            </div>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Bento Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection_list",
+      "id": "collection_list",
+      "label": "Collections",
+      "limit": 4
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Curated comforts"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Browse blankets, quilts and comforters by the kind of comfort you want to bring into the room, from airy and minimal to warm and cocooning."
+    },
+    {
+      "type": "text",
+      "id": "stat_1_val",
+      "label": "Stat 1 Value",
+      "default": "38+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_lbl",
+      "label": "Stat 1 Label",
+      "default": "Collections"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_val",
+      "label": "Stat 2 Value",
+      "default": "1200+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_lbl",
+      "label": "Stat 2 Label",
+      "default": "Designs"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_val",
+      "label": "Stat 3 Value",
+      "default": "Loved"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_lbl",
+      "label": "Stat 3 Label",
+      "default": "By Thousands"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All Button Label",
+      "default": "Explore all collections"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Button Link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Bento Grid"
+    }
+  ]
+}
+{% endschema %}

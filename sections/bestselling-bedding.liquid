@@ -1,0 +1,157 @@
+{{ 'section-bestselling-bedding.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign featured_collection = section.settings.collection
+  assign collection_url = section.settings.cta_link
+  if collection_url == blank and featured_collection != blank
+    assign collection_url = featured_collection.url
+  endif
+
+  assign section_title = section.settings.title | default: 'Best Sellers'
+  assign section_eyebrow = section.settings.eyebrow | default: 'OUR MOST LOVED'
+  assign section_description = section.settings.description | default: 'Loved for softness, warmth and everyday comfort.'
+  assign section_cta_label = section.settings.cta_label | default: 'View All'
+  assign promo_image = section.settings.promo_image
+-%}
+
+<div class="bestselling-bedding color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="bestselling-bedding__shell">
+      <div class="bestselling-bedding__grid">
+        <div class="bestselling-bedding__visual">
+          {%- if collection_url != blank -%}
+            <a class="bestselling-bedding__visual-link" href="{{ collection_url }}">
+          {%- endif -%}
+          <div class="bestselling-bedding__visual-frame">
+            {%- if promo_image != blank -%}
+              {{
+                promo_image
+                | image_url: width: 1200
+                | image_tag:
+                  class: 'bestselling-bedding__visual-image',
+                  widths: '400, 600, 800, 1000, 1200',
+                  sizes: '(min-width: 990px) 40vw, 90vw',
+                  loading: 'lazy',
+                  alt: section_title
+              }}
+            {%- else -%}
+              {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+
+            <div class="bestselling-bedding__visual-overlay"></div>
+            <div class="bestselling-bedding__copy">
+              <p class="bestselling-bedding__eyebrow">{{ section_eyebrow | escape }}</p>
+              <h2 class="bestselling-bedding__title">{{ section_title | escape }}</h2>
+              <p class="bestselling-bedding__description">{{ section_description | escape }}</p>
+              {%- if collection_url != blank -%}
+                <span class="bestselling-bedding__cta">
+                  <span>{{ section_cta_label | escape }}</span>
+                </span>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- if collection_url != blank -%}
+            </a>
+          {%- endif -%}
+        </div>
+
+        <div class="bestselling-bedding__products">
+          <div class="bestselling-bedding__product-grid">
+            {%- if featured_collection != blank and featured_collection.products_count > 0 -%}
+              {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
+                {% render 'card-product',
+                  card_product: product,
+                  media_aspect_ratio: 'square',
+                  image_shape: 'default',
+                  show_secondary_image: true,
+                  show_vendor: false,
+                  show_rating: false,
+                  lazy_load: true,
+                  section_id: section.id
+                %}
+              {%- endfor -%}
+            {%- else -%}
+              {%- for i in (1..6) -%}
+                {% render 'card-product',
+                  placeholder_image: 'product-apparel-2',
+                  section_id: section.id
+                %}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bestselling Bedding",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Promo Banner Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "OUR MOST LOVED"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Loved for softness, warmth and everyday comfort."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 8,
+      "step": 2,
+      "default": 6,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bestselling Bedding"
+    }
+  ]
+}
+{% endschema %}

@@ -210,6 +210,10 @@
                   </p>
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
+                {%- when 'technical_specs' -%}
+                  <div class="product__tech-specs-block" {{ block.shopify_attributes }}>
+                    {% render 'product-technical-specs' %}
+                  </div>
                 {%- when 'collapsible_tab' -%}
                   <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                     <details id="Details-{{ block.id }}-{{ section.id }}">
@@ -1249,6 +1253,12 @@
           "content": "t:sections.main-product.blocks.rating.settings.paragraph.content"
         }
       ]
+    },
+    {
+      "type": "technical_specs",
+      "name": "Bedding Technical Specs",
+      "limit": 1,
+      "settings": []
     },
     {
       "type": "complementary",

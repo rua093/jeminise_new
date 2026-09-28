@@ -1,0 +1,137 @@
+{{ 'section-new-arrivals.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collection = section.settings.collection
+  assign eyebrow = section.settings.eyebrow | default: 'JUST LANDED'
+  assign heading = section.settings.heading | default: 'New Arrivals'
+  assign subheading = section.settings.subheading | default: 'Discover our latest custom blankets, quilts and comforters.'
+  assign bg_image = section.settings.background_image
+-%}
+
+<div
+  class="new-arrivals-section color-{{ section.settings.color_scheme }} gradient"
+  {% if bg_image != blank %}
+    style="background-image: url('{{ bg_image | image_url: width: 2000 }}');"
+  {% endif %}
+>
+  <div class="page-width">
+    <div class="new-arrivals-header">
+      <div class="new-arrivals-header__copy">
+        <p class="new-arrivals-header__eyebrow">{{ eyebrow | escape }}</p>
+        <h2 class="new-arrivals-header__title">{{ heading | escape }}</h2>
+        <p class="new-arrivals-header__subtitle">{{ subheading | escape }}</p>
+      </div>
+
+      <div class="new-arrivals-controls" aria-label="Carousel navigation">
+        <button
+          type="button"
+          class="new-arrivals-btn new-arrivals-btn--prev"
+          aria-label="Previous products"
+          onclick="document.getElementById('Track-{{ section.id }}').scrollBy({ left: -300, behavior: 'smooth' })"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="new-arrivals-btn new-arrivals-btn--next"
+          aria-label="Next products"
+          onclick="document.getElementById('Track-{{ section.id }}').scrollBy({ left: 300, behavior: 'smooth' })"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="new-arrivals-track" id="Track-{{ section.id }}">
+      {%- if collection != blank and collection.products_count > 0 -%}
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          <div class="new-arrivals-slide">
+            {% render 'card-product',
+              card_product: product,
+              media_aspect_ratio: 'square',
+              image_shape: 'default',
+              show_secondary_image: true,
+              show_vendor: false,
+              show_rating: false,
+              lazy_load: true,
+              section_id: section.id
+            %}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..6) -%}
+          <div class="new-arrivals-slide">
+            {% render 'card-product',
+              placeholder_image: 'product-apparel-1',
+              section_id: section.id
+            %}
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "New Arrivals Carousel",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Optional Background Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "JUST LANDED"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our latest custom blankets, quilts and comforters."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "default": 8,
+      "label": "Products to show"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Arrivals Carousel"
+    }
+  ]
+}
+{% endschema %}

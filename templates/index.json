@@ -1,75 +1,136 @@
 {
   "sections": {
-    "image_banner": {
+    "hero_banner": {
       "type": "image-banner",
       "blocks": {
-        "heading": {
+        "eyebrow_text": {
+          "type": "text",
+          "settings": {
+            "text": "CUSTOM BEDDING, MADE PERSONAL",
+            "text_style": "caption-with-letter-spacing"
+          }
+        },
+        "main_heading": {
           "type": "heading",
           "settings": {
-            "heading": "Browse our latest products",
+            "heading": "Personalized Bedding\nMade From Your Ideas",
             "heading_size": "h0"
           }
         },
-        "button": {
+        "sub_text": {
+          "type": "text",
+          "settings": {
+            "text": "Turn photos, names, artwork, and favorite memories into custom blankets, quilts, and comforters made just for you.",
+            "text_style": "body"
+          }
+        },
+        "hero_buttons": {
           "type": "buttons",
           "settings": {
-            "button_label_1": "Shop all",
+            "button_label_1": "Shop Now",
             "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "button_style_secondary_1": false,
+            "button_label_2": "Explore Collection",
+            "button_link_2": "shopify://collections/all",
+            "button_style_secondary_2": true
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "eyebrow_text",
+        "main_heading",
+        "sub_text",
+        "hero_buttons"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
+        "image_overlay_opacity": 30,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
+        "desktop_content_position": "bottom-left",
         "show_text_box": false,
         "image_behavior": "none",
-        "desktop_content_alignment": "center",
+        "desktop_content_alignment": "left",
         "color_scheme": "scheme-3",
         "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
         "show_text_below": false
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
+    "bestselling_bedding": {
+      "type": "bestselling-bedding",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
+        "eyebrow": "OUR MOST LOVED",
+        "title": "Best Sellers",
+        "description": "Loved for softness, warmth and everyday comfort.",
+        "cta_label": "View All",
+        "cta_link": "shopify://collections/best-selling",
+        "products_to_show": 6,
+        "color_scheme": "scheme-1"
+      }
+    },
+    "brand_intro": {
+      "type": "brand-intro",
+      "settings": {
+        "eyebrow": "MADE TO BE YOURS",
+        "heading": "What will you find here?",
+        "body": "Discover unique bedding you won’t find everywhere. Customize the details, add your personal touch, or upload your own idea—we’ll help turn it into something made just for you.",
+        "feature_1_label": "UNIQUE DESIGNS",
+        "feature_1_desc": "Bedding styles made to stand out.",
+        "feature_2_label": "PERSONALIZED",
+        "feature_2_desc": "Customize names, photos, colors and details your way.",
+        "feature_3_label": "YOUR IDEA",
+        "feature_3_desc": "Upload your inspiration and bring it to life.",
+        "cta_label": "Customize your bedding",
+        "cta_link": "shopify://collections/all"
+      }
+    },
+    "collection_bento": {
+      "type": "collection-bento",
+      "settings": {
+        "eyebrow": "Curated comforts",
+        "heading": "Shop by Collection",
+        "subheading": "Browse blankets, quilts and comforters by the kind of comfort you want to bring into the room, from airy and minimal to warm and cocooning.",
+        "stat_1_val": "38+",
+        "stat_1_lbl": "Collections",
+        "stat_2_val": "1200+",
+        "stat_2_lbl": "Designs",
+        "stat_3_val": "Loved",
+        "stat_3_lbl": "By Thousands",
+        "view_all_label": "Explore all collections",
+        "view_all_link": "/collections",
+        "color_scheme": "scheme-1"
+      }
+    },
+    "new_arrivals": {
+      "type": "new-arrivals-carousel",
+      "settings": {
+        "eyebrow": "JUST LANDED",
+        "heading": "New Arrivals",
+        "subheading": "Discover our latest custom blankets, quilts and comforters.",
         "products_to_show": 8,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
-        "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "color_scheme": "scheme-1"
+      }
+    },
+    "trust_signals": {
+      "type": "trust-signals",
+      "settings": {
+        "item_1_title": "Soft Comfort",
+        "item_1_desc": "Thoughtfully made for cozy, everyday comfort.",
+        "item_2_title": "Custom Care",
+        "item_2_desc": "Each design is crafted to match your idea with attention to detail.",
+        "item_3_title": "Lasting Quality",
+        "item_3_desc": "Carefully created to feel beautiful, durable, and gift-worthy.",
+        "item_4_title": "International Shipping",
+        "item_4_desc": "Free shipping to U.S. & Canada. $5.99 USD worldwide.",
+        "color_scheme": "scheme-5"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero_banner",
+    "bestselling_bedding",
+    "brand_intro",
+    "collection_bento",
+    "new_arrivals",
+    "trust_signals"
   ]
 }

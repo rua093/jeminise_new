@@ -1,0 +1,80 @@
+{%- liquid
+  assign active_campaign = settings.seasonal_campaign_mode | default: 'none'
+
+  if active_campaign == 'none' and settings.seasonal_auto_contextual
+    if request.page_type == 'collection' and collection != blank
+      if collection.metafields.custom.seasonal_theme != blank
+        assign active_campaign = collection.metafields.custom.seasonal_theme.value | downcase | strip
+      elsif collection.handle contains 'halloween'
+        assign active_campaign = 'halloween'
+      elsif collection.handle contains 'black-friday' or collection.handle contains 'cyber-monday'
+        assign active_campaign = 'black_friday'
+      elsif collection.handle contains 'christmas' or collection.handle contains 'holiday'
+        assign active_campaign = 'christmas'
+      endif
+    elsif request.page_type == 'product' and product != blank
+      if product.metafields.custom.seasonal_theme != blank
+        assign active_campaign = product.metafields.custom.seasonal_theme.value | downcase | strip
+      else
+        for col in product.collections
+          if col.metafields.custom.seasonal_theme != blank
+            assign active_campaign = col.metafields.custom.seasonal_theme.value | downcase | strip
+            break
+          elsif col.handle contains 'halloween'
+            assign active_campaign = 'halloween'
+            break
+          elsif col.handle contains 'black-friday'
+            assign active_campaign = 'black_friday'
+            break
+          elsif col.handle contains 'christmas'
+            assign active_campaign = 'christmas'
+            break
+          endif
+        endfor
+      endif
+    endif
+  endif
+-%}
+
+{%- if active_campaign != 'none' and active_campaign != blank -%}
+  {{ 'seasonal-campaign.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    document.documentElement.setAttribute('data-seasonal-campaign', '{{ active_campaign }}');
+  </script>
+
+  {%- if settings.seasonal_custom_bg != blank -%}
+    <style>
+      body[data-seasonal-campaign],
+      [data-seasonal-campaign] #MainContent {
+        background-image: url('{{ settings.seasonal_custom_bg | image_url: width: 2400 }}');
+        background-repeat: repeat;
+        background-position: top center;
+        background-size: 1200px auto;
+      }
+    </style>
+  {%- endif -%}
+
+  {%- if settings.seasonal_show_decorations -%}
+    {%- if active_campaign == 'halloween' -%}
+      <div class="seasonal-decorations seasonal-decorations--halloween" aria-hidden="true">
+        <div class="seasonal-decor seasonal-decor--web-topleft">
+          <svg viewBox="0 0 100 100" class="seasonal-svg-web">
+            <path d="M0,0 Q50,0 100,0 Q65,35 0,100 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.35"/>
+            <path d="M0,0 L100,100 M0,0 L35,100 M0,0 L70,100 M0,0 L100,35 M0,0 L100,70" stroke="currentColor" stroke-width="0.75" opacity="0.3"/>
+            <path d="M0,25 Q20,25 25,0 M0,50 Q40,50 50,0 M0,75 Q60,75 75,0" fill="none" stroke="currentColor" stroke-width="0.75" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="seasonal-decor seasonal-decor--bat-floating">
+          <svg viewBox="0 0 24 24" width="32" height="32" class="seasonal-svg-bat">
+            <path fill="currentColor" d="M12,4.5C11.3,6.2 9.5,7.5 7.5,7C6.5,5.5 4,5.5 2.5,7C2,8 2,9.5 3,11C1.5,11.5 0.5,13 1,14.5C2,17.5 6,19 12,19.5C18,19 22,17.5 23,14.5C23.5,13 22.5,11.5 21,11C22,9.5 22,8 21.5,7C20,5.5 17.5,5.5 16.5,7C14.5,7.5 12.7,6.2 12,4.5Z"/>
+          </svg>
+        </div>
+      </div>
+    {%- elsif active_campaign == 'christmas' -%}
+      <div class="seasonal-decorations seasonal-decorations--christmas" aria-hidden="true">
+        <div class="seasonal-decor seasonal-decor--snow-floating">❄</div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

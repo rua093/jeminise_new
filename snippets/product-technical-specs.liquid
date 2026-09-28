@@ -1,0 +1,289 @@
+{{ 'component-product-tech-specs.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign title_lower = product.title | downcase
+  assign type_lower = product.type | downcase
+  assign default_tab = 'duvet'
+
+  if title_lower contains 'quilt' or type_lower contains 'quilt'
+    assign default_tab = 'quilt'
+  elsif title_lower contains 'comforter' or type_lower contains 'comforter'
+    assign default_tab = 'comforter'
+  elsif title_lower contains 'blanket' or type_lower contains 'blanket'
+    assign default_tab = 'blanket'
+  endif
+-%}
+
+<div class="product-tech-specs" id="TechSpecs-{{ section.id }}">
+  <div class="product-tech-specs__tabs" role="tablist">
+    <button
+      type="button"
+      class="product-tech-specs__tab-btn {% if default_tab == 'duvet' %}is-active{% endif %}"
+      role="tab"
+      aria-selected="{% if default_tab == 'duvet' %}true{% else %}false{% endif %}"
+      onclick="switchTechTab(this, 'panel-duvet-{{ section.id }}')"
+    >
+      Duvet Cover (Vỏ chăn)
+    </button>
+    <button
+      type="button"
+      class="product-tech-specs__tab-btn {% if default_tab == 'quilt' %}is-active{% endif %}"
+      role="tab"
+      aria-selected="{% if default_tab == 'quilt' %}true{% else %}false{% endif %}"
+      onclick="switchTechTab(this, 'panel-quilt-{{ section.id }}')"
+    >
+      Quilt (Chăn chần hè - thu)
+    </button>
+    <button
+      type="button"
+      class="product-tech-specs__tab-btn {% if default_tab == 'comforter' %}is-active{% endif %}"
+      role="tab"
+      aria-selected="{% if default_tab == 'comforter' %}true{% else %}false{% endif %}"
+      onclick="switchTechTab(this, 'panel-comforter-{{ section.id }}')"
+    >
+      Comforter (Chăn phao dày)
+    </button>
+    <button
+      type="button"
+      class="product-tech-specs__tab-btn {% if default_tab == 'blanket' %}is-active{% endif %}"
+      role="tab"
+      aria-selected="{% if default_tab == 'blanket' %}true{% else %}false{% endif %}"
+      onclick="switchTechTab(this, 'panel-blanket-{{ section.id }}')"
+    >
+      Blanket (Chăn lông/Sofa)
+    </button>
+  </div>
+
+  <div class="product-tech-specs__content">
+    <!-- 1. DUVET COVER PANEL -->
+    <div id="panel-duvet-{{ section.id }}" class="product-tech-specs__panel {% if default_tab == 'duvet' %}is-active{% endif %}" role="tabpanel">
+      <div class="product-tech-specs__table-wrap">
+        <table class="product-tech-specs__table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Dimensions</th>
+              <th>Bed Size (US)</th>
+              <th>Pillowcase Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>US Twin</strong></td>
+              <td>68" x 88" (173 x 224 cm)</td>
+              <td>Twin / Twin XL</td>
+              <td>No / 1 / 2 Pillowcases (20"x30")</td>
+            </tr>
+            <tr>
+              <td><strong>US Full</strong></td>
+              <td>78" x 88" (198 x 224 cm)</td>
+              <td>Full / Double</td>
+              <td>No / 1 / 2 Pillowcases (20"x30")</td>
+            </tr>
+            <tr>
+              <td><strong>US Queen</strong></td>
+              <td>88" x 88" (224 x 224 cm)</td>
+              <td>Queen Standard</td>
+              <td>No / 1 / 2 Pillowcases (20"x30")</td>
+            </tr>
+            <tr>
+              <td><strong>US King</strong></td>
+              <td>104" x 88" (264 x 224 cm)</td>
+              <td>King / Cal King</td>
+              <td>No / 1 / 2 Pillowcases (20"x30")</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="product-tech-specs__details-grid">
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Material & Fabric</span>
+          <span class="product-tech-specs__detail-val">100% Premium Brushed Microfiber, siêu mềm mịn, chống co rút & nhăn.</span>
+        </div>
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Construction</span>
+          <span class="product-tech-specs__detail-val">Vỏ rỗng 2 mặt dệt nguyên khối lồng ruột, Hidden Zipper & 4 Corner Ties cố định.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. QUILT PANEL -->
+    <div id="panel-quilt-{{ section.id }}" class="product-tech-specs__panel {% if default_tab == 'quilt' %}is-active{% endif %}" role="tabpanel">
+      <div class="product-tech-specs__table-wrap">
+        <table class="product-tech-specs__table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Dimensions</th>
+              <th>Bed Size (US)</th>
+              <th>Pillowcase Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Throw</strong></td>
+              <td>60" x 70" (152 x 178 cm)</td>
+              <td>Sofa / Trẻ em</td>
+              <td>No / 1 / 2 Pillowcases</td>
+            </tr>
+            <tr>
+              <td><strong>Twin</strong></td>
+              <td>68" x 86" (173 x 218 cm)</td>
+              <td>Giường đơn</td>
+              <td>No / 1 / 2 Pillowcases</td>
+            </tr>
+            <tr>
+              <td><strong>Full</strong></td>
+              <td>80" x 90" (203 x 229 cm)</td>
+              <td>Giường đôi vừa</td>
+              <td>No / 1 / 2 Pillowcases</td>
+            </tr>
+            <tr>
+              <td><strong>Queen</strong></td>
+              <td>90" x 90" (229 x 229 cm)</td>
+              <td>Queen Bed</td>
+              <td>No / 1 / 2 Pillowcases</td>
+            </tr>
+            <tr>
+              <td><strong>King</strong></td>
+              <td>102" x 91" (259 x 231 cm)</td>
+              <td>King Bed</td>
+              <td>No / 1 / 2 Pillowcases</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="product-tech-specs__details-grid">
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">3-Layer Quilting</span>
+          <span class="product-tech-specs__detail-val">Mặt trên Microfiber in họa tiết, lớp giữa bông ép Poly-cotton 120-150 GSM, mặt dưới lót thoáng khí.</span>
+        </div>
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Stitching & Season</span>
+          <span class="product-tech-specs__detail-val">Đường may chần sóng gia cố chống xô bông. Thích hợp xuân hè, thu và phòng điều hòa 22-26°C.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. COMFORTER PANEL -->
+    <div id="panel-comforter-{{ section.id }}" class="product-tech-specs__panel {% if default_tab == 'comforter' %}is-active{% endif %}" role="tabpanel">
+      <div class="product-tech-specs__table-wrap">
+        <table class="product-tech-specs__table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Dimensions</th>
+              <th>Bed Size (US)</th>
+              <th>Set Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Twin</strong></td>
+              <td>68" x 86" (173 x 218 cm)</td>
+              <td>Twin Bed</td>
+              <td>1/2 Pillowcases hoặc + Sheet</td>
+            </tr>
+            <tr>
+              <td><strong>Full</strong></td>
+              <td>79" x 90" (200 x 230 cm)</td>
+              <td>Full Bed</td>
+              <td>1/2 Pillowcases hoặc + Sheet</td>
+            </tr>
+            <tr>
+              <td><strong>Queen</strong></td>
+              <td>90" x 90" (228 x 228 cm)</td>
+              <td>Queen Bed</td>
+              <td>1/2 Pillowcases hoặc + Sheet</td>
+            </tr>
+            <tr>
+              <td><strong>King</strong></td>
+              <td>90" x 104" (228 x 264 cm)</td>
+              <td>King Bed</td>
+              <td>1/2 Pillowcases hoặc + Sheet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="product-tech-specs__details-grid">
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Filling & Warmth</span>
+          <span class="product-tech-specs__detail-val">Ruột bông gòn kháng dị ứng 250-300 GSM siêu ấm, dày xốp bồng bềnh đắp trực tiếp.</span>
+        </div>
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Box-Stitch Construction</span>
+          <span class="product-tech-specs__detail-val">May ô định vị (Box-stitch) ngăn tuyệt đối vón cục bông khi giặt sấy. Mùa thu - đông ấm áp.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. BLANKET PANEL -->
+    <div id="panel-blanket-{{ section.id }}" class="product-tech-specs__panel {% if default_tab == 'blanket' %}is-active{% endif %}" role="tabpanel">
+      <div class="product-tech-specs__table-wrap">
+        <table class="product-tech-specs__table">
+          <thead>
+            <tr>
+              <th>Size</th>
+              <th>Dimensions</th>
+              <th>Recommended Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>40" x 30"</strong></td>
+              <td>102 x 76 cm</td>
+              <td>Baby / Pet / Lap: Chăn nôi em bé, đắp đùi văn phòng</td>
+            </tr>
+            <tr>
+              <td><strong>50" x 40"</strong></td>
+              <td>127 x 102 cm</td>
+              <td>Kids / Travel: Trẻ em, học sinh ngủ trưa, du lịch</td>
+            </tr>
+            <tr>
+              <td><strong>60" x 50"</strong></td>
+              <td>152 x 127 cm</td>
+              <td>Standard Throw: Sofa xem phim, đọc sách, trùm vai</td>
+            </tr>
+            <tr>
+              <td><strong>80" x 60"</strong></td>
+              <td>203 x 152 cm</td>
+              <td>Twin/Queen: Chăn đắp giường người lớn, trùm 2 người</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="product-tech-specs__details-grid">
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Fleece vs Sherpa</span>
+          <span class="product-tech-specs__detail-val">Fleece: Mỏng nhẹ, mịn màng. Sherpa: 2 mặt (mặt lông cừu giả cực dày và ấm).</span>
+        </div>
+        <div class="product-tech-specs__detail-item">
+          <span class="product-tech-specs__detail-label">Care Instructions</span>
+          <span class="product-tech-specs__detail-val">Giặt máy nước lạnh chu trình nhẹ, sấy nhiệt độ thấp, không ủi trực tiếp lên sợi lông.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function switchTechTab(btn, panelId) {
+    const parent = btn.closest('.product-tech-specs');
+    if (!parent) return;
+
+    parent.querySelectorAll('.product-tech-specs__tab-btn').forEach(b => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-selected', 'false');
+    });
+    parent.querySelectorAll('.product-tech-specs__panel').forEach(p => p.classList.remove('is-active'));
+
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-selected', 'true');
+    const target = parent.querySelector('#' + panelId);
+    if (target) target.classList.add('is-active');
+  }
+</script>

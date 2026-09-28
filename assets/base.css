@@ -3635,3 +3635,27 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* Jeminise Bedding Brand Utilities & Micro-interactions */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.button,
+.shopify-challenge__button,
+.customer button {
+  transition: transform var(--duration-short) ease, background-color var(--duration-short) ease, opacity var(--duration-short) ease, box-shadow var(--duration-short) ease;
+}
+
+.button:hover,
+.shopify-challenge__button:hover,
+.customer button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(184, 122, 90, 0.25);
+}
+
+.card:hover {
+  box-shadow: 0 8px 24px rgba(62, 51, 45, 0.08);
+}
+

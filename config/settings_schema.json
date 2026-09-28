@@ -1466,5 +1466,45 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Seasonal Campaigns",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Configure seasonal events (Halloween, Black Friday, Christmas, etc.) with clean CSS variables and optional ornaments without code modification."
+      },
+      {
+        "type": "select",
+        "id": "seasonal_campaign_mode",
+        "label": "Active Storewide Campaign",
+        "options": [
+          { "value": "none", "label": "None (Standard Storefront)" },
+          { "value": "halloween", "label": "Halloween Spooky Season" },
+          { "value": "black_friday", "label": "Black Friday / Cyber Monday" },
+          { "value": "christmas", "label": "Holiday & Christmas" },
+          { "value": "valentine", "label": "Valentine's Day" }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "checkbox",
+        "id": "seasonal_auto_contextual",
+        "label": "Auto-detect on seasonal collections/products",
+        "info": "Activates campaign styles on collections or products whose handle contains 'halloween' or has seasonal metafield.",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "seasonal_show_decorations",
+        "label": "Show seasonal ornaments & footer decorations",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "seasonal_custom_bg",
+        "label": "Optional Custom Background Image"
+      }
+    ]
   }
 ]

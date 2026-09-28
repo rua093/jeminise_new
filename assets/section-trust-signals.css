@@ -1,0 +1,70 @@
+.trust-signals-section {
+  padding: 3rem 0;
+  background-color: #f2e5db;
+  border-top: 1px solid rgba(116, 82, 58, 0.1);
+  border-bottom: 1px solid rgba(116, 82, 58, 0.1);
+}
+
+.trust-signals-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.trust-signal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4rem;
+}
+
+.trust-signal-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(184, 122, 90, 0.15);
+  color: #b87a5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trust-signal-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.trust-signal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.trust-signal-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #3e332d;
+  font-family: var(--font-body-family);
+}
+
+.trust-signal-desc {
+  margin: 0;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  color: #6f584b;
+}
+
+@media screen and (max-width: 989px) {
+  .trust-signals-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.4rem 1.6rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .trust-signals-grid {
+    grid-template-columns: 1fr;
+    gap: 1.8rem;
+  }
+}

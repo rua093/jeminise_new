@@ -1,0 +1,145 @@
+{{ 'section-brand-intro.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign bg_image = section.settings.background_image
+  assign eyebrow = section.settings.eyebrow | default: 'MADE TO BE YOURS'
+  assign heading = section.settings.heading | default: 'What will you find here?'
+  assign body = section.settings.body | default: 'Discover unique bedding you won’t find everywhere. Customize the details, add your personal touch, or upload your own idea—we’ll help turn it into something made just for you.'
+  assign cta_label = section.settings.cta_label | default: 'Customize your bedding'
+  assign cta_link = section.settings.cta_link | default: '/collections/all'
+-%}
+
+<div class="brand-intro-section">
+  <div class="page-width">
+    <div
+      class="brand-intro-card"
+      {% if bg_image != blank %}
+        style="background-image: url('{{ bg_image | image_url: width: 2000 }}');"
+      {% endif %}
+    >
+      <div class="brand-intro-card__overlay"></div>
+      <div class="brand-intro-card__content">
+        <div class="brand-intro-card__eyebrow-container">
+          <div class="brand-intro-card__eyebrow">{{ eyebrow | escape }}</div>
+          <div class="brand-intro-card__eyebrow-line"></div>
+        </div>
+
+        <h2 class="brand-intro-card__heading">{{ heading | escape }}</h2>
+        <p class="brand-intro-card__body">{{ body | escape }}</p>
+
+        <div class="brand-intro-card__features-box">
+          <div class="brand-intro-card__feature-row">
+            <span class="brand-intro-card__feature-num">01</span>
+            <span class="brand-intro-card__feature-label">{{ section.settings.feature_1_label | default: 'UNIQUE DESIGNS' | escape }}</span>
+            <span class="brand-intro-card__feature-desc">{{ section.settings.feature_1_desc | default: 'Bedding styles made to stand out.' | escape }}</span>
+          </div>
+          <div class="brand-intro-card__feature-row">
+            <span class="brand-intro-card__feature-num">02</span>
+            <span class="brand-intro-card__feature-label">{{ section.settings.feature_2_label | default: 'PERSONALIZED' | escape }}</span>
+            <span class="brand-intro-card__feature-desc">{{ section.settings.feature_2_desc | default: 'Customize names, photos, colors and details your way.' | escape }}</span>
+          </div>
+          <div class="brand-intro-card__feature-row">
+            <span class="brand-intro-card__feature-num">03</span>
+            <span class="brand-intro-card__feature-label">{{ section.settings.feature_3_label | default: 'YOUR IDEA' | escape }}</span>
+            <span class="brand-intro-card__feature-desc">{{ section.settings.feature_3_desc | default: 'Upload your inspiration and bring it to life.' | escape }}</span>
+          </div>
+        </div>
+
+        {%- if cta_link != blank -%}
+          <a href="{{ cta_link }}" class="brand-intro-card__cta">
+            <span>{{ cta_label | escape }}</span>
+            <svg class="brand-intro-card__cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand Intro Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "MADE TO BE YOURS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What will you find here?"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Description",
+      "default": "Discover unique bedding you won’t find everywhere. Customize the details, add your personal touch, or upload your own idea—we’ll help turn it into something made just for you."
+    },
+    {
+      "type": "text",
+      "id": "feature_1_label",
+      "label": "Feature 1 Label",
+      "default": "UNIQUE DESIGNS"
+    },
+    {
+      "type": "text",
+      "id": "feature_1_desc",
+      "label": "Feature 1 Description",
+      "default": "Bedding styles made to stand out."
+    },
+    {
+      "type": "text",
+      "id": "feature_2_label",
+      "label": "Feature 2 Label",
+      "default": "PERSONALIZED"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_desc",
+      "label": "Feature 2 Description",
+      "default": "Customize names, photos, colors and details your way."
+    },
+    {
+      "type": "text",
+      "id": "feature_3_label",
+      "label": "Feature 3 Label",
+      "default": "YOUR IDEA"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_desc",
+      "label": "Feature 3 Description",
+      "default": "Upload your inspiration and bring it to life."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Button Label",
+      "default": "Customize your bedding"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Intro Banner"
+    }
+  ]
+}
+{% endschema %}

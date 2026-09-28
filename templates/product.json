@@ -3,13 +3,6 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
-          "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
-          }
-        },
         "title": {
           "type": "title"
         },
@@ -23,6 +16,12 @@
             "swatch_shape": "circle"
           }
         },
+        "customizer_cta": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<a href=\"/apps/amazon-customizer/upload?product_id={{ product.id }}\" class=\"button button--primary\" style=\"width: 100%; margin: 1.2rem 0; display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; text-decoration: none;\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 20h9\"></path><path d=\"M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z\"></path></svg> Customize This Bedding</a>"
+          }
+        },
         "quantity_selector": {
           "type": "quantity_selector"
         },
@@ -30,7 +29,19 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": false
+          }
+        },
+        "technical_specs": {
+          "type": "technical_specs",
+          "settings": {}
+        },
+        "shipping_info": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Care Information",
+            "icon": "truck",
+            "content": "<p><strong>Free Shipping:</strong> Complimentary standard shipping on all orders to the U.S. and Canada. Flat rate $5.99 USD worldwide.<br><strong>Easy Care:</strong> Machine wash cold on gentle cycle, tumble dry low heat or hang dry to preserve softness and vibrant colors.</p>"
           }
         },
         "description": {
@@ -44,12 +55,14 @@
         }
       },
       "block_order": [
-        "vendor",
         "title",
         "price",
         "variant_picker",
+        "customizer_cta",
         "quantity_selector",
         "buy_buttons",
+        "technical_specs",
+        "shipping_info",
         "description",
         "share"
       ],
@@ -57,26 +70,24 @@
         "enable_sticky_info": true,
         "color_scheme": "scheme-1",
         "media_position": "left",
-        "gallery_layout": "stacked",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
+        "gallery_layout": "thumbnail",
+        "media_size": "medium",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
         "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "padding_top": 28,
+        "padding_bottom": 36
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "lifestyle_gallery": {
+      "type": "pdp-lifestyle-gallery",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "eyebrow": "Lifestyle inspiration",
+        "heading": "See how our bedding styles real homes",
+        "color_scheme": "scheme-1"
       }
     },
-    "related-products": {
+    "related_products": {
       "type": "related-products",
       "settings": {
         "heading": "You may also like",
@@ -91,13 +102,13 @@
         "show_rating": false,
         "columns_mobile": "2",
         "padding_top": 36,
-        "padding_bottom": 28
+        "padding_bottom": 48
       }
     }
   },
   "order": [
     "main",
-    "disclosures",
-    "related-products"
+    "lifestyle_gallery",
+    "related_products"
   ]
 }

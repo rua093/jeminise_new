@@ -74,6 +74,27 @@
           </span>
         </button>
       </div>
+
+      {%- if cart != empty -%}
+        <div class="cart-drawer__free-shipping" style="padding: 1.2rem 2.4rem; background: #faf5ee; border-bottom: 1px solid rgba(116, 82, 58, 0.12);">
+          {%- assign free_shipping_threshold = 7500 -%}
+          {%- if cart.total_price >= free_shipping_threshold -%}
+            <p style="margin: 0; font-size: 1.3rem; font-weight: 600; color: #2d8643; display: flex; align-items: center; gap: 0.6rem;">
+              <span>🎉</span> You've unlocked <strong>FREE Standard Shipping</strong>!
+            </p>
+          {%- else -%}
+            {%- assign remaining = free_shipping_threshold | minus: cart.total_price -%}
+            {%- assign percent = cart.total_price | times: 100 | divided_by: free_shipping_threshold -%}
+            <p style="margin: 0 0 0.8rem; font-size: 1.3rem; color: #3e332d;">
+              Add <strong>{{ remaining | money }}</strong> more to unlock <strong>FREE Shipping</strong>!
+            </p>
+            <div style="height: 6px; width: 100%; background: #e8e0d5; border-radius: 3px; overflow: hidden;">
+              <div style="height: 100%; width: {{ percent }}%; background: #b87a5a; transition: width 0.3s ease;"></div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       <cart-drawer-items
         view-event-payload="{{ cart | standard_event_data: 'view', context: 'dialog' | escape }}"
         view-event-trigger="manual"

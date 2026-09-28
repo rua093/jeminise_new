@@ -1,0 +1,93 @@
+.pdp-lifestyle-section {
+  padding: 4rem 0;
+  background-color: var(--color-background);
+  border-top: 1px solid rgba(116, 82, 58, 0.12);
+}
+
+.pdp-lifestyle-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+.pdp-lifestyle-eyebrow {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #b87a5a;
+  font-weight: 700;
+}
+
+.pdp-lifestyle-heading {
+  margin: 0.6rem 0;
+  font-size: clamp(2.4rem, 3.2vw, 3.6rem);
+  font-family: var(--font-heading-family);
+  color: rgb(var(--color-foreground));
+  line-height: 1.2;
+}
+
+.pdp-lifestyle-track {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.pdp-lifestyle-card {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f7f1eb;
+  border: 1px solid rgba(116, 82, 58, 0.12);
+  box-shadow: 0 4px 14px rgba(62, 51, 45, 0.04);
+}
+
+.pdp-lifestyle-media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.pdp-lifestyle-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.pdp-lifestyle-card:hover .pdp-lifestyle-img {
+  transform: scale(1.05);
+}
+
+.pdp-lifestyle-caption {
+  padding: 1.2rem 1.6rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #3e332d;
+  background: #ffffff;
+}
+
+@media screen and (max-width: 989px) {
+  .pdp-lifestyle-track {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .pdp-lifestyle-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+    gap: 1.4rem;
+  }
+  .pdp-lifestyle-track::-webkit-scrollbar {
+    display: none;
+  }
+  .pdp-lifestyle-card {
+    flex: 0 0 75%;
+    scroll-snap-align: start;
+  }
+}

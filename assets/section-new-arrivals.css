@@ -1,0 +1,105 @@
+.new-arrivals-section {
+  position: relative;
+  padding: 4.5rem 0;
+  background-color: var(--color-background);
+  background-size: cover;
+  background-position: center;
+}
+
+.new-arrivals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.8rem;
+  gap: 2rem;
+}
+
+.new-arrivals-header__copy {
+  max-width: 600px;
+}
+
+.new-arrivals-header__eyebrow {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #b87345;
+  font-weight: 700;
+}
+
+.new-arrivals-header__title {
+  margin: 0.6rem 0;
+  font-size: clamp(2.6rem, 3.5vw, 3.8rem);
+  font-family: var(--font-heading-family);
+  line-height: 1.2;
+}
+
+.new-arrivals-header__subtitle {
+  margin: 0;
+  font-size: 1.5rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.new-arrivals-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.new-arrivals-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+  background: var(--color-background);
+  color: rgb(var(--color-foreground));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.new-arrivals-btn:hover {
+  background: #b87a5a;
+  color: #ffffff;
+  border-color: #b87a5a;
+  transform: scale(1.05);
+}
+
+.new-arrivals-track {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 1.5rem;
+}
+
+.new-arrivals-track::-webkit-scrollbar {
+  display: none;
+}
+
+.new-arrivals-slide {
+  flex: 0 0 calc(25% - 1.5rem);
+  min-width: 250px;
+  scroll-snap-align: start;
+}
+
+@media screen and (max-width: 989px) {
+  .new-arrivals-slide {
+    flex: 0 0 calc(33.333% - 1.4rem);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .new-arrivals-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .new-arrivals-slide {
+    flex: 0 0 calc(65% - 1rem);
+  }
+}

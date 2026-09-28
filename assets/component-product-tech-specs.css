@@ -1,0 +1,114 @@
+.product-tech-specs {
+  margin: 1.5rem 0;
+  border: 1px solid rgba(116, 82, 58, 0.18);
+  border-radius: 14px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(62, 51, 45, 0.04);
+}
+
+.product-tech-specs__tabs {
+  display: flex;
+  background: #f7f1eb;
+  border-bottom: 1px solid rgba(116, 82, 58, 0.15);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.product-tech-specs__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.product-tech-specs__tab-btn {
+  padding: 1rem 1.6rem;
+  background: none;
+  border: none;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #6f584b;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.product-tech-specs__tab-btn.is-active {
+  color: #b87a5a;
+  background: #ffffff;
+  border-bottom-color: #b87a5a;
+}
+
+.product-tech-specs__content {
+  padding: 1.6rem;
+}
+
+.product-tech-specs__panel {
+  display: none;
+}
+
+.product-tech-specs__panel.is-active {
+  display: block;
+}
+
+.product-tech-specs__table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.6rem;
+}
+
+.product-tech-specs__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.3rem;
+  text-align: left;
+}
+
+.product-tech-specs__table th {
+  background: #faf6f2;
+  color: #3e332d;
+  font-weight: 600;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(116, 82, 58, 0.12);
+  white-space: nowrap;
+}
+
+.product-tech-specs__table td {
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(116, 82, 58, 0.12);
+  color: #55443a;
+}
+
+.product-tech-specs__details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  background: #faf6f2;
+  padding: 1.2rem;
+  border-radius: 10px;
+}
+
+.product-tech-specs__detail-item {
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.product-tech-specs__detail-label {
+  font-weight: 700;
+  color: #3e332d;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.product-tech-specs__detail-val {
+  color: #6f584b;
+  line-height: 1.4;
+}
+
+@media screen and (max-width: 600px) {
+  .product-tech-specs__details-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,144 @@
+.bestselling-bedding {
+  --bb-surface: #fbf5ee;
+  --bb-card-surface: #fffaf4;
+  --bb-border: rgba(116, 82, 58, 0.2);
+  --bb-text: #46342a;
+  --bb-muted: #7f6758;
+  --bb-accent: #b87345;
+  --bb-accent-hover: #925634;
+  --bb-shadow: 0 16px 36px rgba(75, 54, 40, 0.06);
+  color: var(--bb-text);
+  padding: 3.5rem 0;
+}
+
+.bestselling-bedding__shell {
+  border: 1px solid var(--bb-border);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 251, 246, 0.95) 0%, rgba(250, 243, 234, 0.98) 100%);
+  box-shadow: var(--bb-shadow);
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.bestselling-bedding__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  align-items: stretch;
+}
+
+.bestselling-bedding__visual-link {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.bestselling-bedding__visual-frame {
+  position: relative;
+  min-height: 400px;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #debfa7;
+}
+
+.bestselling-bedding__visual-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.bestselling-bedding__visual-link:hover .bestselling-bedding__visual-image {
+  transform: scale(1.03);
+}
+
+.bestselling-bedding__visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(35, 24, 18, 0.72) 0%, rgba(35, 24, 18, 0.15) 50%, transparent 100%);
+}
+
+.bestselling-bedding__copy {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2.4rem;
+  color: #faf8f5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.bestselling-bedding__eyebrow {
+  margin: 0;
+  font-size: 1.2rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f7d5c2;
+  font-weight: 600;
+}
+
+.bestselling-bedding__title {
+  margin: 0;
+  font-size: clamp(2.4rem, 3vw, 3.4rem);
+  font-family: var(--font-heading-family);
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.bestselling-bedding__description {
+  margin: 0;
+  font-size: 1.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+.bestselling-bedding__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.8rem;
+  padding: 1rem 2.2rem;
+  background: #ffffff;
+  color: #3e332d;
+  font-weight: 600;
+  font-size: 1.4rem;
+  border-radius: 10px;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.bestselling-bedding__cta:hover {
+  transform: translateY(-2px);
+  background: #faf8f5;
+}
+
+.bestselling-bedding__products {
+  display: flex;
+  flex-direction: column;
+}
+
+.bestselling-bedding__product-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 1.5vw, 1.5rem);
+  height: 100%;
+}
+
+@media screen and (min-width: 990px) {
+  .bestselling-bedding__product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .bestselling-bedding__grid {
+    grid-template-columns: 1fr;
+  }
+  .bestselling-bedding__visual-frame {
+    min-height: 280px;
+  }
+}
