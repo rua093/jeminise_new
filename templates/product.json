@@ -9,6 +9,10 @@
         "price": {
           "type": "price"
         },
+        "buy_more_save_more": {
+          "type": "buy_more_save_more",
+          "settings": {}
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -31,6 +35,10 @@
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": false
           }
+        },
+        "delivery_estimate": {
+          "type": "delivery_estimate",
+          "settings": {}
         },
         "technical_specs": {
           "type": "technical_specs",
@@ -57,10 +65,12 @@
       "block_order": [
         "title",
         "price",
+        "buy_more_save_more",
         "variant_picker",
         "customizer_cta",
         "quantity_selector",
         "buy_buttons",
+        "delivery_estimate",
         "technical_specs",
         "shipping_info",
         "description",

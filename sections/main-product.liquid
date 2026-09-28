@@ -210,6 +210,14 @@
                   </p>
                 {%- when 'custom_liquid' -%}
                   {{ block.settings.custom_liquid }}
+                {%- when 'buy_more_save_more' -%}
+                  <div class="product__buy-more-save-more-block" {{ block.shopify_attributes }}>
+                    {% render 'buy-more-save-more' %}
+                  </div>
+                {%- when 'delivery_estimate' -%}
+                  <div class="product__delivery-estimate-block" {{ block.shopify_attributes }}>
+                    {% render 'product-delivery-estimate' %}
+                  </div>
                 {%- when 'technical_specs' -%}
                   <div class="product__tech-specs-block" {{ block.shopify_attributes }}>
                     {% render 'product-technical-specs' %}
@@ -806,6 +814,21 @@
     {
       "type": "price",
       "name": "t:sections.main-product.blocks.price.name",
+      "limit": 1
+    },
+    {
+      "type": "buy_more_save_more",
+      "name": "Buy More Save More",
+      "limit": 1
+    },
+    {
+      "type": "delivery_estimate",
+      "name": "Delivery Estimate",
+      "limit": 1
+    },
+    {
+      "type": "technical_specs",
+      "name": "Bedding Technical Specs",
       "limit": 1
     },
     {

@@ -1,0 +1,81 @@
+.pdp-delivery-estimate {
+  margin: 1.2rem 0;
+  padding: 1.4rem;
+  background: #fbf7f1;
+  border: 1px solid rgba(116, 82, 58, 0.15);
+  border-radius: 12px;
+}
+
+.pdp-delivery-estimate__header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  color: #3e332d;
+}
+
+.pdp-delivery-estimate__icon {
+  color: #b87a5a;
+  display: flex;
+  align-items: center;
+}
+
+.pdp-delivery-estimate__range {
+  color: #b87a5a;
+  font-weight: 700;
+}
+
+.pdp-delivery-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  position: relative;
+  text-align: center;
+}
+
+.pdp-delivery-timeline::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: #e2d7cc;
+  z-index: 1;
+}
+
+.pdp-delivery-step {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.pdp-delivery-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #b87a5a;
+  color: #b87a5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.pdp-delivery-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3e332d;
+}
+
+.pdp-delivery-date {
+  font-size: 1.1rem;
+  color: #7f6758;
+}
