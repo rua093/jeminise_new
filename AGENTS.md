@@ -51,7 +51,6 @@ If a workaround is unavoidable, isolate it and explain why.
 
 - Follow the architecture and conventions already used by the theme.
 - Prefer reusing existing sections, snippets, components, CSS variables, helpers, and utilities.
-- Prefer existing theme components and native browser features before introducing new libraries or global scripts.
 - Do not introduce a second implementation of functionality the theme already provides.
 - Keep merchant-editable content configurable through section/block settings when appropriate.
 - Preserve existing schema IDs, app blocks, dynamic sources, translations, metafields, and Shopify integrations.
@@ -158,33 +157,16 @@ Do not move important SEO content into JavaScript-only rendering without a stron
 
 ## 10. Performance
 
-Keep the theme lightweight and avoid unnecessary storefront work.
+Avoid unnecessary:
 
-Avoid:
-
-- large JavaScript bundles or heavy libraries for simple features
-- loading page-specific JavaScript globally
-- duplicate dependencies, app scripts or tracking scripts
-- unnecessary third-party scripts
-- oversized hero images or loading desktop-size media on mobile
-- eager loading of non-critical images, videos or carousel slides
-- heavy carousel libraries when existing theme/native functionality is sufficient
-- excessive animations or continuous scroll effects
-- repeated DOM queries and unnecessary variant processing
-- expensive scroll/resize listeners
-- deeply nested or repeated Liquid loops
-- rendering large hidden DOM structures only for JavaScript
-- loading personalization/live-preview code on pages that do not use it
-
-Prefer:
-
-- existing theme components before adding new libraries
-- component/section-scoped JavaScript
-- responsive Shopify images with correct dimensions
-- lazy loading for non-critical media
-- `transform` and `opacity` for animation
-- event-driven logic instead of DOM polling
-- loading heavy personalization/live-preview features only where required
+- large JavaScript bundles
+- duplicate dependencies
+- repeated DOM queries
+- repeated variant processing
+- scroll/resize handlers without throttling when needed
+- layout-triggering JavaScript
+- oversized images
+- eager loading of non-critical media
 
 Do not knowingly worsen:
 
@@ -235,8 +217,6 @@ Before reporting completion:
 - test relevant responsive widths
 - test Shopify commerce flows when affected
 - verify Theme Editor behavior when relevant
-- check that new scripts only load on pages/components that actually need them
-- check that images, carousels, app scripts and live-preview features do not unnecessarily increase initial page load
 
 Do not claim a test passed unless it was actually run.
 

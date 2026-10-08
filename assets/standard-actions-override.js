@@ -1,148 +1,245 @@
 /**
- * Standard Actions configuration for Dawn.
- *
- * Storefront Renderer injects the Shopify Standard Actions bundle
- * (`window.Shopify.actions.{updateCart,openCart,getCart,…}`). This file
- * overrides the bundle's built-in Dawn refresh path with an explicit,
- * in-theme version so forks that change Dawn's cart contract keep
- * working. Remove this file and the built-in defaults take over.
- *
- *   - openCart   — opens <cart-drawer>; falls back to /cart.
- *   - updateCart — after the Storefront API mutation, refreshes the
- *     affected cart sections and publishes `cart-update` so Dawn's
- *     pubsub subscribers react.
- *   - other actions (getCart, etc.) keep the default implementation.
+ * Horizon overrides for Shopify.actions:
+ * - updateCart: emit events from the cart drawer scope.
+ * - openCart: open the cart drawer (fall back to /cart when absent).
+ * - bridge Amazon Customizer's direct `/cart/add.js` calls into Horizon's
+ *   cart event flow so the drawer refreshes and auto-opens like native adds.
  */
 
-// Cart custom elements that advertise sections via getSectionsToRender().
-// If Dawn adds a new cart custom element, add its tag here.
-const DAWN_CART_TAGS = ['cart-drawer', 'cart-items', 'cart-drawer-items', 'cart-notification'];
+import { CartLinesUpdateEvent } from '@shopify/events';
 
-// Sections that Dawn's own pubsub subscribers refresh (cart.js's
-// CartItems#onCartUpdate fetches and replaces these directly when
-// cart-update fires; cart-drawer.js's renderContents handles the
-// drawer body). We skip them here to avoid double-rendering.
-// Format is '<element-tag>:<getSectionsToRender entry id>'.
-// If you change which sections those subscribers refresh, update this set.
-const DAWN_PUBSUB_REFRESHED_SECTIONS = new Set([
-  'cart-drawer:cart-drawer',
-  'cart-drawer-items:CartDrawer',
-  'cart-items:main-cart-items',
-]);
+let amazonCustomizerCartBridgeInstalled = false;
 
-// Walk every mounted Dawn cart custom element, collect the sections it
-// wants rendered, and dedupe. Returns a Map keyed by section id, each
-// entry pointing at the DOM mount and the selector used to extract the
-// fresh fragment.
-function collectCartSections() {
-  const sections = new Map();
+function parseJsonBody(body) {
+  if (!body) return null;
 
-  for (const el of document.querySelectorAll(DAWN_CART_TAGS.join(','))) {
-    let entries;
+  if (typeof body === 'string') {
     try {
-      entries = el.getSectionsToRender?.();
-    } catch {
-      continue;
-    }
-
-    const tag = el.tagName.toLowerCase();
-    for (const entry of entries ?? []) {
-      if (DAWN_PUBSUB_REFRESHED_SECTIONS.has(`${tag}:${entry.id}`)) continue;
-
-      const sectionId = entry.section ?? entry.id;
-      if (!sectionId || sections.has(sectionId)) continue;
-
-      // Two patterns coexist in getSectionsToRender():
-      //   - cart-items style: entry.section is the parent Liquid section
-      //     id, entry.selector is a child node inside it.
-      //   - cart-drawer / cart-notification style: entry.id IS the mount;
-      //     there is no parent wrapper.
-      const root = entry.section ? document.getElementById(entry.id) : document;
-      if (!root) continue;
-
-      const mount = entry.selector
-        ? (root.querySelector(entry.selector) ?? (entry.section ? root : null))
-        : document.getElementById(entry.id);
-      if (!mount) continue;
-
-      sections.set(sectionId, {
-        mount,
-        extractSelector: entry.selector || '.shopify-section',
-      });
+      return JSON.parse(body);
+    } catch (_error) {
+      return null;
     }
   }
 
-  return sections;
+  if (body instanceof URLSearchParams) {
+    const items = [];
+    const grouped = new Map();
+
+    for (const [key, value] of body.entries()) {
+      const match = key.match(/^items\[(\d+)\]\[(.+)\]$/);
+      if (!match) continue;
+
+      const [, index, field] = match;
+      const item = grouped.get(index) || {};
+      item[field] = value;
+      grouped.set(index, item);
+    }
+
+    grouped.forEach((item) => items.push(item));
+    return items.length ? { items } : null;
+  }
+
+  if (body instanceof FormData) {
+    const id = body.get('id');
+    if (!id) return null;
+
+    return {
+      items: [
+        {
+          id,
+          quantity: body.get('quantity') || 1,
+          properties: {},
+        },
+      ],
+    };
+  }
+
+  return null;
 }
 
-// After a Storefront API mutation, refresh every Dawn cart section
-// that isn't already refreshed by Dawn's own pubsub subscribers, then
-// publish 'cart-update' so the subscribers run.
-//
-// We always fetch /cart.js (with sections= when we have any) so that
-// `cartData` is defined for subscribers. quick-add-bulk.js reads
-// `event.cartData.items` unconditionally — publishing without cartData
-// makes it throw.
-async function refreshDawnCartUI() {
-  const sections = collectCartSections();
-  const sectionsQuery = sections.size
-    ? `?sections=${[...sections.keys()].join(',')}`
-    : '';
-  // `routes` is a Dawn global, but don't assume it's defined.
-  const cartUrl = (typeof routes !== 'undefined' && routes?.cart_url) || '/cart';
-  const url = `${cartUrl}.js${sectionsQuery}`;
-  const cartData = await fetch(url, { headers: { Accept: 'application/json' } })
-    .then((r) => (r.ok ? r.json() : null))
-    .catch(() => null);
+function isCartAddRequest(input) {
+  const url = input instanceof Request ? input.url : String(input);
 
-  if (cartData?.sections) {
-    for (const [id, { mount, extractSelector }] of sections) {
-      const html = cartData.sections[id];
-      if (!html) continue;
-      const source = new DOMParser()
-        .parseFromString(html, 'text/html')
-        .querySelector(extractSelector);
-      if (source) mount.replaceChildren(...source.childNodes);
-    }
+  try {
+    const pathname = new URL(url, window.location.origin).pathname.replace(/\/+$/, '');
+    return pathname.endsWith('/cart/add') || pathname.endsWith('/cart/add.js');
+  } catch (_error) {
+    return false;
   }
+}
 
-  // Hand off to Dawn's existing subscribers. cartData is the full
-  // Cart Ajax payload (items, item_count, token, …) plus sections;
-  // quick-add-bulk.js and price-per-item.js read it directly.
-  publish(PUB_SUB_EVENTS.cartUpdate, {
-    source: 'external-refresh',
-    cartData: cartData ?? undefined,
+function isAmazonCustomizerPayload(payload) {
+  return Boolean(
+    payload?.items?.some(
+      (item) =>
+        item &&
+        typeof item === 'object' &&
+        item.properties &&
+        typeof item.properties === 'object' &&
+        '_customization_id' in item.properties
+    )
+  );
+}
+
+function getCartSectionIds() {
+  const sectionIds = new Set(['cart-icon-bubble']);
+
+  document.querySelectorAll('cart-items-component[data-section-id]').forEach((component) => {
+    const sectionId = component.getAttribute('data-section-id');
+    if (sectionId) sectionIds.add(sectionId);
   });
+
+  document
+    .querySelectorAll('[data-cart-dependent-section][data-cart-recommendations-section-id]')
+    .forEach((element) => {
+      const sectionId = element.getAttribute('data-cart-recommendations-section-id');
+      if (sectionId) sectionIds.add(sectionId);
+    });
+
+  return Array.from(sectionIds);
 }
 
-function initStandardActions() {
+async function fetchCartStateForTheme() {
+  const sectionIds = getCartSectionIds();
+  const [cartResponse, sectionsResponse] = await Promise.all([
+    fetch(`${window.Shopify.routes.root}cart.js`, {
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin',
+    }),
+    fetch(
+      `${window.Shopify.routes.root}cart?sections=${encodeURIComponent(sectionIds.join(','))}&_=${Date.now()}`,
+      {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+        credentials: 'same-origin',
+      }
+    ),
+  ]);
+
+  if (!cartResponse.ok) {
+    throw new Error(`Cart state refresh failed (${cartResponse.status})`);
+  }
+
+  if (!sectionsResponse.ok) {
+    throw new Error(`Cart sections refresh failed (${sectionsResponse.status})`);
+  }
+
+  const [cart, sections] = await Promise.all([cartResponse.json(), sectionsResponse.json()]);
+  return { cart, sections };
+}
+
+function installAmazonCustomizerCartBridge() {
+  if (amazonCustomizerCartBridgeInstalled) return;
+  amazonCustomizerCartBridgeInstalled = true;
+
+  const nativeFetch = window.fetch.bind(window);
+
+  window.fetch = async (input, init) => {
+    const response = await nativeFetch(input, init);
+
+    try {
+      if (!isCartAddRequest(input) || !response.ok) {
+        return response;
+      }
+
+      const payload = parseJsonBody(init?.body);
+      if (!isAmazonCustomizerPayload(payload)) {
+        return response;
+      }
+
+      const deferredCartUpdate = CartLinesUpdateEvent.createPromise();
+
+      document.dispatchEvent(
+        new CartLinesUpdateEvent({
+          action: 'add',
+          context: 'product',
+          lines: (payload.items || []).map((item) => ({
+            merchandiseId: String(item.id || ''),
+            quantity: Number(item.quantity) || 1,
+          })),
+          promise: deferredCartUpdate.promise,
+        })
+      );
+
+      fetchCartStateForTheme()
+        .then(({ cart, sections }) => {
+          deferredCartUpdate.resolve({
+            cart: CartLinesUpdateEvent.createCartFromAjaxResponse(cart),
+            detail: {
+              sections,
+              items: cart.items,
+              itemCount: cart.item_count,
+              source: 'amazon-customizer-theme-bridge',
+              didError: false,
+            },
+          });
+        })
+        .catch((error) => {
+          deferredCartUpdate.reject(error);
+          console.warn('[theme-cart] Amazon customizer bridge failed to refresh cart UI:', error);
+        });
+    } catch (error) {
+      console.warn('[theme-cart] Amazon customizer bridge failed:', error);
+    }
+
+    return response;
+  };
+}
+
+function init() {
   const actions = window.Shopify?.actions;
+
+  const getDrawer = () => document.querySelector('theme-drawer#cart-drawer');
+  const openCartDrawer = () => {
+    /** @type {HTMLElement & {open?: () => void} | null} */
+    const drawer = getDrawer();
+
+    if (drawer?.open) {
+      drawer.open();
+      return true;
+    }
+
+    window.location.href = Theme.routes.cart_url || '/cart';
+    return false;
+  };
+  const closeCartDrawer = () => {
+    /** @type {HTMLElement & {close?: () => void} | null} */
+    const drawer = getDrawer();
+    drawer?.close?.();
+  };
+  const toggleCartDrawer = () => {
+    /** @type {HTMLElement & {toggle?: () => void} | null} */
+    const drawer = getDrawer();
+
+    if (drawer?.toggle) {
+      drawer.toggle();
+      return true;
+    }
+
+    return openCartDrawer();
+  };
+
+  window.ThemeCart = Object.assign(window.ThemeCart || {}, {
+    drawerSelector: 'theme-drawer#cart-drawer',
+    open: openCartDrawer,
+    close: closeCartDrawer,
+    toggle: toggleCartDrawer,
+  });
+
+  document.addEventListener('theme:cart:open', openCartDrawer);
+  document.addEventListener('theme:cart:close', closeCartDrawer);
+  document.addEventListener('theme:cart:toggle', toggleCartDrawer);
+  installAmazonCustomizerCartBridge();
+
   if (!actions) return;
 
-  actions.openCart.configure({
-    async handler(defaultHandler) {
-      const drawer = document.querySelector('cart-drawer');
-      if (drawer && typeof drawer.open === 'function') {
-        drawer.open();
-        return;
-      }
-      return defaultHandler();
-    },
+  actions.updateCart.configure({
+    eventTarget: () => getDrawer() ?? document,
   });
 
-  actions.updateCart.configure({
-    // Dawn doesn't currently listen for shopify:cart:* events, but the
-    // bundle requires an eventTarget. document is the conventional root.
-    eventTarget: () => document,
-    async handler(defaultHandler) {
-      const result = await defaultHandler();
-      try {
-        await refreshDawnCartUI();
-      } catch (error) {
-        console.error('[Dawn] Standard Actions cart refresh failed; reloading.', error);
-        window.location.reload();
-      }
-      return result;
+  actions.openCart.configure({
+    async handler() {
+      openCartDrawer();
     },
   });
 }
@@ -151,7 +248,7 @@ function initStandardActions() {
 // `Shopify.actions`; otherwise wait for DOMContentLoaded, which fires after
 // all module scripts have executed regardless of document order.
 if (window.Shopify?.actions) {
-  initStandardActions();
+  init();
 } else {
-  document.addEventListener('DOMContentLoaded', initStandardActions, { once: true });
+  document.addEventListener('DOMContentLoaded', init, { once: true });
 }
